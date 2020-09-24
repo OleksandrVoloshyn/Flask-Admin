@@ -19,17 +19,10 @@ def login():
         del data['login']
         user = UserModel.query.filter_by(email=data['email']).first()
         if user and user.password == data['password']:
-            return redirect(url_for('login_u', user_id=user.id))
+            login_user(user)
+            return redirect(url_for('home'))
         return redirect(url_for('login'))
     return render_template('login.html', form=form)
-
-
-@app.route('/login_user/<user_id>')
-def login_u(user_id):
-    user = UserModel.query.get(user_id)
-    # Коли передавав юзера з функції логін вибиває помилку
-    login_user(user)
-    return redirect(url_for('home'))
 
 
 @app.route('/logout')
